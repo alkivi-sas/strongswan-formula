@@ -1,14 +1,21 @@
-{%- set connections = salt['pillar.get']('strongswan:connections', {}) %}
-# /etc/ipsec.conf - Openswan IPsec configuration file
-# Managed by Salt, do not modify
-# Source: {{ source }}
+### Configuration managed by Saltstack
 
-version 2.0     # conforms to second version of ipsec.conf specification
-
-# Connections
-{%- for conn_name, conn_details in connections.iteritems() %}
-conn {{ conn_name }}
-  {%- for key, value in conn_details.iteritems() %}
-  {{ key }}={{ value }}
+{% if config.setup is defined -%}
+config setup
+  {%- for conf, value in config.setup.iteritems() %}
+      {{ conf }}={{ value }}
   {%- endfor %}
-{%- endfor %}
+{% endif %}
+
+{%- if connections is defined %}
+  {%- for conn, options in connections.iteritems() %}
+    {%- if conn == "default" %}
+conn %{{ conn }}
+    {%- else %}
+conn {{ conn }}
+    {%- endif %}
+    {%- for o, v in options.iteritems() %}
+      {{ o }}={{ v }}
+    {%- endfor %}
+  {% endfor %}
+{%- endif %}

@@ -1,0 +1,13 @@
+strongswan:
+  key_type: RSA
+  key_file: salt.key
+  config:
+    setup:
+      charondebug: '"cfg 2, dmn 2, ike 2, net 2"'
+  connections:
+    default:
+      keyexchange: ikev2
+      ikelifetime: 60m
+      keylife: 20m
+      rekeymargin: 3m
+      mobike: "no"
