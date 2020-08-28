@@ -2,19 +2,19 @@
 
 {% if config.setup is defined -%}
 config setup
-  {%- for conf, value in config.setup.iteritems() %}
+  {%- for conf, value in config.setup.items() %}
       {{ conf }}={{ value }}
   {%- endfor %}
 {% endif %}
 
 {%- if connections is defined %}
-  {%- for conn, options in connections.iteritems() %}
+  {%- for conn, options in connections.items() %}
     {%- if conn == "default" %}
 conn %{{ conn }}
     {%- else %}
 conn {{ conn }}
     {%- endif %}
-    {%- for o, v in options.iteritems() %}
+    {%- for o, v in options.items() %}
       {{ o }}={{ v }}
     {%- endfor %}
   {% endfor %}
